@@ -21,6 +21,7 @@ const UserSchema: Schema<User> = new mongoose.Schema({
     },
     authProviderId: {
         type: String,
+        unique: true,
         required: [true, 'Auth provider id is Missing'],
     },
     image: {
