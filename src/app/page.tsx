@@ -1,19 +1,29 @@
 import { auth } from "@/auth";
-import SignIn from "@/components/SignIn";
-import SignOut from "@/components/SignOut";
+import AddTransactions from "@/components/AddTransactions";
+import Login from "@/components/Login";
+import LogoutButton from "@/components/LogoutButton";
+import Navbar from "@/components/Navbar";
+import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const session = await auth();
   
   return (
     <>
-      <div className="flex justify-center items-center h-screen w-screen gap-8">
-        <SignIn />
-        <SignOut />
         {
-          session?.user? <div>SignedIn as {session.user.email}</div> : <div>Not Signed In</div>
+          session?.user? (
+            <div className="h-screen w-screen">
+            <Navbar />
+            <div className="h-[88vh] flex justify-center items-center">
+            <AddTransactions />
+            </div>
+            </div>
+          ) : (
+            <div className="h-screen w-screen flex justify-center items-center">
+            <Login />
+            </div>
+          )
         }
-      </div>
     </>
   );
 }
