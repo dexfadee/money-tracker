@@ -19,7 +19,7 @@ export default async function RootLayout({
   return (
     <html lang="en" className="dark bg-neutral-950 text-white">
       <AuthWrapper>
-      <body className={inter.className}>
+      <body className={inter.className + '  w-screen'}>
       {children}
       <Toaster />
       </body>

@@ -15,10 +15,11 @@ export async function GET() {
     try {
         await dbConnect();
 
-        const balance = await Transaction.find({ user: session.user.email, isPending: false }, 'amount');
-        const total = balance.reduce((acc, curr) => acc + curr.amount, 0);
+        const balance = await Transaction.find({ user: session.user.email }, 'amount');
+        const income = balance.filter( bal => bal.amount > 0 ).reduce((acc, curr) => acc + curr.amount, 0);
+        const expense = balance.filter( bal => bal.amount < 0 ).reduce((acc, curr) => acc + curr.amount, 0);
 
-        if (!balance || !total) {
+        if (balance.length === 0) {
             return Response.json(
                 { message: 'Error Calculating balance', success: true },
                 { status: 500 }
@@ -26,13 +27,13 @@ export async function GET() {
         }
 
         return Response.json(
-            { message: 'Error getting balance', success: true, balance: total },
+            { message: 'Income Expense fetched', success: true, data: { income, expense } },
             { status: 200 }
         );
 
     } catch (error) {
         return Response.json(
-            { success: false, message: 'Error getting balance' },
+            { success: false, message: 'Error getting income expense' },
             { status: 500 }
         );
     }

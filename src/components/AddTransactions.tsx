@@ -9,6 +9,7 @@ import {
     FormControl,
     FormField,
     FormItem,
+    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
@@ -27,7 +28,7 @@ const formSchema = z.object({
 })
 
 function AddTransactions() {
-
+        
     const { toast } = useToast();
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const { transactionfor, amount, isPending } = values;
@@ -51,13 +52,13 @@ function AddTransactions() {
         defaultValues: {
             transactionfor: "",
             amount: '',
-            isPending: 'pending',
+            isPending: 'completed',
         },
     })
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/4 w-1/2 mx-auto pt-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/2 w-1/2 mx-auto pt-6">
             <h1 className='font-medium'>Add Transaction</h1>
             <Separator />
                 <FormField
@@ -65,6 +66,7 @@ function AddTransactions() {
                     name="transactionfor"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel>Transaction For</FormLabel>
                             <FormControl>
                                 <Input placeholder="Transaction For" {...field} />
                             </FormControl>
@@ -77,8 +79,9 @@ function AddTransactions() {
                     name="amount"
                     render={({ field }) => (
                         <FormItem>
+                            <FormLabel>Amount (Negative for Expense)</FormLabel>
                             <FormControl>
-                                <Input placeholder="Amout (Enter Negative for expense)" {...field} />
+                                <Input placeholder="Amount" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>
@@ -88,7 +91,8 @@ function AddTransactions() {
                     control={form.control}
                     name="isPending"
                     render={({ field }) => (
-                        <FormItem className='items-center flex gap-2'>
+                        <FormItem className='items-center flex gap-1'>
+                            <FormLabel>Is the transaction Completed?</FormLabel>
                             <FormControl className='flex w-full items-center'>
                                 <ToggleGroup type="single" value={field.value} defaultValue='pending' onValueChange={field.onChange} className='flex flex-col md:flex-row'>
                                     <ToggleGroupItem value='completed' className='w-full md:w-1/2'>Completed</ToggleGroupItem>
