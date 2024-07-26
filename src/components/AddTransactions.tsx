@@ -9,14 +9,13 @@ import {
     FormControl,
     FormField,
     FormItem,
-    FormLabel,
     FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Checkbox } from "@/components/ui/checkbox"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
-import { toast, useToast } from "@/components/ui/use-toast"
-import axios, { AxiosError } from 'axios';
+import { useToast } from "@/components/ui/use-toast"
+import axios from 'axios';
+import { Separator } from "@/components/ui/separator"
 
 const formSchema = z.object({
     transactionfor: z.string().min(2).max(50),
@@ -26,7 +25,6 @@ const formSchema = z.object({
         z.literal('pending')
     ])
 })
-
 
 function AddTransactions() {
 
@@ -59,7 +57,9 @@ function AddTransactions() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 w-1/4">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/4 w-1/2 mx-auto pt-6">
+            <h1 className='font-medium'>Add Transaction</h1>
+            <Separator />
                 <FormField
                     control={form.control}
                     name="transactionfor"
@@ -90,9 +90,9 @@ function AddTransactions() {
                     render={({ field }) => (
                         <FormItem className='items-center flex gap-2'>
                             <FormControl className='flex w-full items-center'>
-                                <ToggleGroup type="single" value={field.value} defaultValue='pending' onValueChange={field.onChange}>
-                                    <ToggleGroupItem value='completed' className='w-1/2'>Completed</ToggleGroupItem>
-                                    <ToggleGroupItem value='pending' className='w-1/2'>Pending</ToggleGroupItem>
+                                <ToggleGroup type="single" value={field.value} defaultValue='pending' onValueChange={field.onChange} className='flex flex-col md:flex-row'>
+                                    <ToggleGroupItem value='completed' className='w-full md:w-1/2'>Completed</ToggleGroupItem>
+                                    <ToggleGroupItem value='pending' className='w-full md:w-1/2'>Pending</ToggleGroupItem>
                                 </ToggleGroup>
                             </FormControl>
                             <FormMessage />

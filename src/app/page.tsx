@@ -1,9 +1,8 @@
 import { auth } from "@/auth";
 import AddTransactions from "@/components/AddTransactions";
+import Balance from "@/components/Balance";
 import Login from "@/components/Login";
-import LogoutButton from "@/components/LogoutButton";
 import Navbar from "@/components/Navbar";
-import { Button } from "@/components/ui/button";
 
 export default async function Home() {
   const session = await auth();
@@ -14,8 +13,10 @@ export default async function Home() {
           session?.user? (
             <div className="h-screen w-screen">
             <Navbar />
-            <div className="h-[88vh] flex justify-center items-center">
-            <AddTransactions />
+            <div className="h-[88vh] flex flex-col gap-2">
+              <h1 className="text-center text-4xl md:text-6xl font-bold pt-4">Welcome, {session.user.name}</h1>
+              <Balance />
+              <AddTransactions />
             </div>
             </div>
           ) : (
