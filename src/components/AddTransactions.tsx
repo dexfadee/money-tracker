@@ -15,6 +15,8 @@ import {
 import { Input } from "@/components/ui/input"
 import { Checkbox } from "@/components/ui/checkbox"
 import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { toast, useToast } from "@/components/ui/use-toast"
+import axios, { AxiosError } from 'axios';
 
 const formSchema = z.object({
     transactionfor: z.string().min(2).max(50),
@@ -25,11 +27,26 @@ const formSchema = z.object({
     ])
 })
 
-function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-}
 
 function AddTransactions() {
+
+    const { toast } = useToast();
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const { transactionfor, amount, isPending } = values;
+        const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending,  });
+        if (response.status === 200) {
+            toast({
+                title: "Transaction Added",
+                description: "Transaction has been added successfully",
+            })
+        } else {
+            toast({
+                title: "Error",
+                description: "Error adding transaction",
+                variant: "destructive",
+            })
+        }
+    }
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),

@@ -5,7 +5,6 @@ export interface User extends Document {
     email: string;
     image: string;
     authProviderId: string;
-    transactions: mongoose.Types.ObjectId[];
 }
 
 const UserSchema: Schema<User> = new mongoose.Schema({
@@ -27,12 +26,7 @@ const UserSchema: Schema<User> = new mongoose.Schema({
     image: {
         type: String,
         required: [true, 'Avatar is required'],
-    },
-    transactions: [{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'Transaction',
-        required: [true, 'User missing in transaction'],
-    }]
+    }
 });
 
 const User = mongoose.models?.User || mongoose.model("User", UserSchema);

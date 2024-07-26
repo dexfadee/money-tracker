@@ -3,8 +3,8 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface Transaction extends Document {
     text: string;
     amount: number;
-    isPending: boolean;
-    user: mongoose.Types.ObjectId;
+    isPending: string;
+    user: string;
 }
 
 const TransactionSchema: Schema<Transaction> = new mongoose.Schema({
@@ -17,14 +17,13 @@ const TransactionSchema: Schema<Transaction> = new mongoose.Schema({
         required: [true, 'Amount is required'],
     },
     isPending: {
-        type: Boolean,
-        default: true,
+        type: String,
+        required: [true, 'Pending status is required'],
     },
     user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
         required: [true, 'User missing in transaction'],
-    },
+    }
 });
 
 const Transaction = mongoose.models?.Transaction || mongoose.model("Transaction", TransactionSchema)
