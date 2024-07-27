@@ -30,6 +30,7 @@ const formSchema = z.object({
 function AddTransactions() {
         
     const { toast } = useToast();
+
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const { transactionfor, amount, isPending } = values;
         const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending,  });
@@ -91,7 +92,7 @@ function AddTransactions() {
                     control={form.control}
                     name="isPending"
                     render={({ field }) => (
-                        <FormItem className='items-center flex gap-1'>
+                        <FormItem className='items-center flex gap-2'>
                             <FormLabel>Is the transaction Completed?</FormLabel>
                             <FormControl className='flex w-full items-center'>
                                 <ToggleGroup type="single" value={field.value} defaultValue='pending' onValueChange={field.onChange} className='flex flex-col md:flex-row'>
