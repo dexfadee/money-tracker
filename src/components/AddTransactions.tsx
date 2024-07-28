@@ -38,7 +38,7 @@ function AddTransactions() {
         
         const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending: isPending === 'completed' ? false : true  });
         
-        resp(response.status);
+        resp(Math.random().toString());
         if (response.status === 200) {
             toast({
                 title: "Transaction Added",

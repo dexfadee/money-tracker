@@ -84,7 +84,7 @@ function TransactionList() {
 
                                                 <AlertDialogAction onClick={async () => {
                                                     const res = await axios.post('/api/toggle-pending', { id: transaction._id })
-                                                    changeRess(res.status)
+                                                    changeRess(Math.random().toString())
                                                     toast({
                                                         title: "Transaction Status Changed",
                                                         description: "Transaction status has been changed successfully",
@@ -122,7 +122,7 @@ function TransactionList() {
 
                                                 <AlertDialogAction onClick={async () => {
                                                     const res = await axios.post('/api/delete-transaction', { id: transaction._id })
-                                                    changeRess(res.status)
+                                                    changeRess(Math.random().toString())
                                                     toast({
                                                         title: "Transaction Deleted",
                                                         description: "Transaction has been deleted successfully",

@@ -1,8 +1,8 @@
 import { create } from 'zustand'
 
 const useRes = create((set) => ({
-  res: 0,
-  changeRess: (res: number) => set(() => ({ res })),
+  res: '',
+  changeRess: (res: string) => set(() => ({ res })),
 }))
 
 export default useRes;
