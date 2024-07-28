@@ -16,7 +16,6 @@ export async function GET() {
         await dbConnect();
 
         const balance = await Transaction.find({ user: session.user.email }, 'amount isPending');
-        console.log(balance);
         const income = balance.filter( bal => (bal.amount > 0 && (bal.isPending === 'false') )).reduce((acc, curr) => acc + curr.amount, 0);
         const expense = balance.filter( bal => (bal.amount < 0 && (bal.isPending === 'false') )).reduce((acc, curr) => acc + curr.amount, 0);
 
