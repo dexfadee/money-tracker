@@ -18,7 +18,7 @@ export async function POST(request: Request) {
     const transaction = await Transaction.create({
         text: transactionfor,
         amount,
-        isPending: isPending === "pending",
+        isPending,
         user: session.user.email
     })
 

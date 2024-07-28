@@ -17,6 +17,7 @@ import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { useToast } from "@/components/ui/use-toast"
 import axios from 'axios';
 import { Separator } from "@/components/ui/separator"
+import useRes from '@/lib/store'
 
 const formSchema = z.object({
     transactionfor: z.string().min(2).max(50),
@@ -30,10 +31,14 @@ const formSchema = z.object({
 function AddTransactions() {
         
     const { toast } = useToast();
-
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    const resp: any = useRes( (state: any) => state.changeRess )
+    
+    async function onSubmit(values: z.infer<typeof formSchema>) {        
         const { transactionfor, amount, isPending } = values;
-        const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending,  });
+        
+        const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending: isPending === 'completed' ? false : true  });
+        
+        resp(response.status);
         if (response.status === 200) {
             toast({
                 title: "Transaction Added",

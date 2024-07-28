@@ -16,14 +16,15 @@ export async function GET() {
         await dbConnect();
 
         const balance = await Transaction.find({ user: session.user.email, isPending: false }, 'amount');
-        const total = balance.reduce((acc, curr) => acc + curr.amount, 0);
-
-        if (!balance || !total) {
+        
+        if (!balance) {
             return Response.json(
                 { message: 'Error Calculating balance', success: true },
-                { status: 500 }
+                { status: 501 }
             ); 
         }
+        
+        const total = balance.reduce((acc, curr) => acc + curr.amount, 0);
 
         return Response.json(
             { message: 'Error getting balance', success: true, balance: total },
@@ -32,7 +33,7 @@ export async function GET() {
 
     } catch (error) {
         return Response.json(
-            { success: false, message: 'Error getting balance' },
+            { success: false, message: 'Error getting balance', error },
             { status: 500 }
         );
     }

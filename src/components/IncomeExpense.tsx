@@ -2,6 +2,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import { Separator } from './ui/separator'
+import useRes from '@/lib/store';
 
 function IncomeExpense() {
 
@@ -19,9 +20,11 @@ function IncomeExpense() {
     }
   }
 
+  const resp = useRes( (state :any) => state.res)
+
   useEffect(() => {
     getBalance()
-  }, [])
+  }, [resp])
 
   return (
     <div className='flex gap-2 text-2xl font-semibold justify-center pt-10'>
