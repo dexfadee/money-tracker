@@ -32,6 +32,15 @@ function AddTransactions() {
         
     const { toast } = useToast();
     const resp: any = useRes( (state: any) => state.changeRess )
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            transactionfor: "",
+            amount: '',
+            isPending: 'completed',
+        },
+    })
     
     async function onSubmit(values: z.infer<typeof formSchema>) {        
         const { transactionfor, amount, isPending } = values;
@@ -40,6 +49,7 @@ function AddTransactions() {
         
         resp(Math.random().toString());
         if (response.status === 200) {
+            form.reset({ transactionfor: '', amount: '', isPending: 'completed' });
             toast({
                 title: "Transaction Added",
                 description: "Transaction has been added successfully",
@@ -53,18 +63,10 @@ function AddTransactions() {
         }
     }
 
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            transactionfor: "",
-            amount: '',
-            isPending: 'completed',
-        },
-    })
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/2 w-1/2 mx-auto pt-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/2 w-full mx-auto pt-6 px-6">
             <h1 className='font-medium'>Add Transaction</h1>
             <Separator />
                 <FormField
@@ -87,7 +89,7 @@ function AddTransactions() {
                         <FormItem>
                             <FormLabel>Amount (Negative for Expense)</FormLabel>
                             <FormControl>
-                                <Input placeholder="Amount" {...field} />
+                                <Input type='number' placeholder="Amount" {...field} />
                             </FormControl>
                             <FormMessage />
                         </FormItem>

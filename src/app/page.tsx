@@ -5,12 +5,16 @@ import IncomeExpense from "@/components/IncomeExpense";
 import Login from "@/components/Login";
 import Navbar from "@/components/Navbar";
 import TransactionList from "@/components/TransactionList";
+import Head from "next/head";
 
 export default async function Home() {
   const session = await auth();
   
   return (
     <>
+      <Head>
+        <link rel="shortcut icon" href="favicon.ico" type="image/x-icon" />
+      </Head>
         {
           session?.user? (
             <div className="h-screen max-w-screen overflow-x-hidden">
@@ -21,7 +25,7 @@ export default async function Home() {
               <Balance />
               <AddTransactions />
             </div>
-            <div className="h-[88vh] pr-8 pb-4 md:w-1/2 flex flex-col gap-2 md:pl-0 pl-8">
+            <div className="h-[88vh] pb-4 md:w-1/2 w-full flex flex-col gap-2 md:pl-0 px-4">
               <IncomeExpense />
               <TransactionList />
             </div>
