@@ -66,7 +66,7 @@ function AddTransactions() {
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-1/2 w-full mx-auto pt-6 px-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-3/4 w-full mx-auto pt-6 px-6">
             <h1 className='font-medium'>Add Transaction</h1>
             <Separator />
                 <FormField
