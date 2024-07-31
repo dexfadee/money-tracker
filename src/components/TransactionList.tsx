@@ -85,7 +85,7 @@ function TransactionList() {
                             <TableRow key={transaction._id} className={`bg-opacity-15` + (transaction.amount > 0 ? ` bg-green-600` : ` bg-red-600`)}>
                                 <TableCell className="w-1/4">{transaction.text}</TableCell>
                                 <TableCell className="w-1/4">{transaction.amount}</TableCell>
-                                <TableCell className="w-1/4">
+                                <TableCell className="text-right w-1/4">
                                     <AlertDialog>
 
                                         <AlertDialogTrigger disabled={!(transaction.isPending === 'true')} className="border border-gray-700 rounded-md px-2 py-1">
@@ -122,7 +122,7 @@ function TransactionList() {
                                         </AlertDialogContent>
                                     </AlertDialog>
                                 </TableCell>
-                                <TableCell className="w-1/4">
+                                <TableCell className="text-center md:text-right w-1/4">
                                     <AlertDialog>
 
                                         <AlertDialogTrigger className="border border-gray-700 py-1 rounded-md px-2">
