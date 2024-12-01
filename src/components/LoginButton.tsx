@@ -5,8 +5,22 @@ import { signin } from '@/helpers/auth'
 import { FaGoogle } from '@react-icons/all-files/fa/FaGoogle'
 
 function LoginButton() {
+  const [loading, setLoading] = React.useState(false)
   return (
-    <Button onClick={() => signin("google") } className='flex gap-2'><FaGoogle /><span>SignIn to Continue</span></Button>
+    <Button onClick={() => {
+      setLoading(true);
+      signin("google")
+      setLoading(false);
+    } } className='flex gap-2'>
+      {
+        loading? 'Loading...' : (
+          <>
+            <FaGoogle />
+            <span>Sign in with Google</span>
+          </>
+        )
+      }
+    </Button>
   )
 }
 
