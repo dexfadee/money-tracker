@@ -3,7 +3,7 @@ import mongoose, { Schema, Document } from "mongoose";
 export interface Transaction extends Document {
     text: string;
     amount: number;
-    isPending: string;
+    isPending: boolean;
     user: string;
 }
 
@@ -17,7 +17,7 @@ const TransactionSchema: Schema<Transaction> = new mongoose.Schema({
         required: [true, 'Amount is required'],
     },
     isPending: {
-        type: String,
+        type: Boolean,
         required: [true, 'Pending status is required'],
     },
     user: {

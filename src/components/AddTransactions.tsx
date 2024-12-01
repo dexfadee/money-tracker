@@ -18,38 +18,37 @@ import { useToast } from "@/components/ui/use-toast"
 import axios from 'axios';
 import { Separator } from "@/components/ui/separator"
 import useRes from '@/lib/store'
+import { set } from 'mongoose'
 
 const formSchema = z.object({
     transactionfor: z.string().min(2).max(50),
-    amount: z.string().min(1).max(1000000),
-    isPending: z.union([
-        z.literal('completed'),
-        z.literal('pending')
-    ])
+    amount: z.string().min(1).max(1000000)
 })
 
 function AddTransactions() {
-        
+
+    const [addingTransaction, setAddingTransaction] = React.useState<boolean>(false);
+
     const { toast } = useToast();
-    const resp: any = useRes( (state: any) => state.changeRess )
+    const resp: any = useRes((state: any) => state.changeRess)
 
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
             transactionfor: "",
-            amount: '',
-            isPending: 'completed',
+            amount: ''
         },
     })
-    
-    async function onSubmit(values: z.infer<typeof formSchema>) {        
-        const { transactionfor, amount, isPending } = values;
-        
-        const response = await axios.post('/api/add-transaction', { transactionfor, amount, isPending: isPending === 'completed' ? false : true  });
-        
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        setAddingTransaction(true);
+        const { transactionfor, amount } = values;
+
+        const response = await axios.post('/api/add-transaction', { transactionfor: transactionfor.substring(1), amount, isPending: transactionfor.startsWith('~') ? true : false });
+
         resp(Math.random().toString());
         if (response.status === 200) {
-            form.reset({ transactionfor: '', amount: '', isPending: 'completed' });
+            form.reset({ transactionfor: '', amount: '' });
             toast({
                 title: "Transaction Added",
                 description: "Transaction has been added successfully",
@@ -61,14 +60,15 @@ function AddTransactions() {
                 variant: "destructive",
             })
         }
+        setAddingTransaction(false);
     }
 
 
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-3/4 w-full mx-auto pt-6 px-6">
-            <h1 className='font-medium'>Add Transaction</h1>
-            <Separator />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-2 md:w-3/4 w-full mx-auto pt-6 px-6 flex flex-col gap-2">
+                <h1 className='font-medium'>Add Transaction</h1>
+                <Separator />
                 <FormField
                     control={form.control}
                     name="transactionfor"
@@ -95,7 +95,7 @@ function AddTransactions() {
                         </FormItem>
                     )}
                 />
-                <FormField
+                {/* <FormField
                     control={form.control}
                     name="isPending"
                     render={({ field }) => (
@@ -110,8 +110,12 @@ function AddTransactions() {
                             <FormMessage />
                         </FormItem>
                     )}
-                />
-                <Button type="submit" className='w-full'>Add Transaction</Button>
+                /> */}
+                <Button type="submit" className='w-full' disabled={addingTransaction}>
+                    {
+                        addingTransaction ? 'Adding Transaction...' : 'Add Transaction'
+                    }
+                </Button>
             </form>
         </Form>
     )

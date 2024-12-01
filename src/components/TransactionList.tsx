@@ -23,6 +23,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import useRes from "@/lib/store";
 import { useToast } from "./ui/use-toast";
+import { Button } from "./ui/button";
 
 function CheckMark() {
     return (
@@ -52,12 +53,24 @@ function TransactionList() {
 
     const resp = useRes((state: any) => state.res)
     const changeRess: any = useRes((state: any) => state.changeRess)
+    const [filterPending, setFilterPending] = useState<boolean>(false)
+
+    const [transactions, setTransactions] = useState<Array<{ _id: string, text: string, amount: number, isPending: boolean, user: string }>>([])
+
+    const [filteredTransactions, setFilteredTransactions] = useState<Array<{ _id: string, text: string, amount: number, isPending: boolean, user: string }>>([])
 
     useEffect(() => {
         getTransactions()
     }, [resp])
 
-    const [transactions, setTransactions] = useState<Array<{ _id: string, text: string, amount: number, isPending: string, user: string }>>([])
+    useEffect(() => {
+        if (transactions.length === 0) {
+            getTransactions()
+        }
+        if (filterPending) {
+            setFilteredTransactions(transactions.filter(transaction => transaction.isPending.toString() === 'true'));
+        }
+    }, [filterPending])
 
     const getTransactions = async () => {
         const res = await axios.get('/api/get-transactions')
@@ -65,11 +78,13 @@ function TransactionList() {
     }
 
     const { toast } = useToast();
-    console.log(transactions[0]?.isPending);
 
     return (
         <ScrollArea className="h-[calc(88vh-152px)] w-full rounded-md py-2 px-4 border border-gray-800">
-            <h1 className="text-2xl text-center font-semibold pt-2">A list of your recent Transactions</h1>
+            <div className="flex justify-between">
+                <h1 className="text-2xl text-center font-semibold pt-2">A list of your recent Transactions</h1>
+                <Button onClick={() => setFilterPending(!filterPending)} className="w-[20%] mt-2 break-words">{filterPending ? 'All' : 'Pending'}</Button>
+            </div>
             <Table className="">
                 <TableHeader>
                     <TableRow>
@@ -81,15 +96,15 @@ function TransactionList() {
                 </TableHeader>
                 <TableBody>
                     {
-                        transactions.map((transaction: { _id: string, text: string, amount: number, isPending: string, user: string }) => (
+                        (filterPending ? filteredTransactions : transactions).map((transaction: { _id: string, text: string, amount: number, isPending: boolean, user: string }) => (
                             <TableRow key={transaction._id} className={`bg-opacity-15` + (transaction.amount > 0 ? ` bg-green-600` : ` bg-red-600`)}>
                                 <TableCell className="w-1/4">{transaction.text}</TableCell>
                                 <TableCell className="w-1/4">{transaction.amount}</TableCell>
                                 <TableCell className="text-right w-1/4">
                                     <AlertDialog>
 
-                                        <AlertDialogTrigger disabled={!(transaction.isPending === 'true')} className="border border-gray-700 rounded-md px-2 py-1">
-                                            {(transaction.isPending === 'true') ? <LoadingArrows /> : <CheckMark />}
+                                        <AlertDialogTrigger disabled={!(transaction.isPending.toString() === 'true')} className="border border-gray-700 rounded-md px-2 py-1">
+                                            {(transaction.isPending.toString() === 'true') ? <LoadingArrows /> : <CheckMark />}
                                         </AlertDialogTrigger>
 
                                         <AlertDialogContent>

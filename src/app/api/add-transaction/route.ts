@@ -3,7 +3,7 @@ import { auth } from "@/auth";
 import Transaction from "@/models/transaction.model";
 
 export async function POST(request: Request) {
-    const { transactionfor, amount, isPending } = await request.json();
+    const { transactionfor, amount, isPending }: { transactionfor: string, amount: number, isPending: boolean } = await request.json();
     await dbConnect();
 
     const session = await auth();

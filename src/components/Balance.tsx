@@ -28,7 +28,6 @@ function Balance() {
         <h1 className='text-5xl font-bold'>
             Rs. {balance}
         </h1>
-        <span className='text-sm opacity-30'>(Only Completed Transactions are calculated)</span>
     </div>
   )
 }
